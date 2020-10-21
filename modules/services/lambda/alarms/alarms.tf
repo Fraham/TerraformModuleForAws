@@ -22,9 +22,8 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_alarm" {
   dimensions = {
     FunctionName = var.function_name
   }
-  alarm_actions = [var.cloud_watch_alarm_topic]
-  ok_actions    = [var.cloud_watch_alarm_topic]
-  count         = var.cloud_watch_alarm_topic == "" ? 0 : 1
+  alarm_actions = [var.cloud_watch_alarm_topic != "" ? var.cloud_watch_alarm_topic : null]
+  ok_actions    = [var.cloud_watch_alarm_topic != "" ? var.cloud_watch_alarm_topic : null]
 }
 
 resource "aws_cloudwatch_metric_alarm" "lambda_throttles_alarm" {
@@ -41,7 +40,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_throttles_alarm" {
   dimensions = {
     FunctionName = var.function_name
   }
-  alarm_actions = [var.cloud_watch_alarm_topic]
-  ok_actions    = [var.cloud_watch_alarm_topic]
-  count         = var.cloud_watch_alarm_topic == "" ? 0 : 1
+  alarm_actions = [var.cloud_watch_alarm_topic != "" ? var.cloud_watch_alarm_topic : null]
+  ok_actions    = [var.cloud_watch_alarm_topic != "" ? var.cloud_watch_alarm_topic : null]
 }
