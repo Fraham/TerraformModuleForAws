@@ -6,7 +6,8 @@ variable lambda_schedules {
 resource "aws_cloudwatch_event_rule" "event_rule" {
   for_each = var.lambda_schedules
 
-  description         = "Schedule for ${each.value.function_name} with expression ${each.value.schedule_expression}"
+  name = each.value.schedule_name
+  description         = "Schedule for ${each.value.function_name} lambda with expression ${each.value.schedule_expression}"
   schedule_expression = each.value.schedule_expression
 }
 
