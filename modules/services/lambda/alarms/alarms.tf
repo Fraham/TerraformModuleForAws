@@ -11,7 +11,7 @@ variable "cloud_watch_alarm_topic" {
 resource "aws_cloudwatch_metric_alarm" "lambda_errors_alarm" {
   for_each = toset(var.function_name)
   
-  alarm_name          = "${each.function_name}-LambdaErrors"
+  alarm_name          = "${each.value}-LambdaErrors"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "Errors"
@@ -19,10 +19,10 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_alarm" {
   period              = "300"
   statistic           = "Sum"
   threshold           = "0"
-  alarm_description   = "${each.function_name} lambda errors"
+  alarm_description   = "${each.value} lambda errors"
   treat_missing_data  = "notBreaching"
   dimensions = {
-    FunctionName = var.function_name
+    FunctionName = each.value
   }
   alarm_actions = var.cloud_watch_alarm_topic != "" ? [var.cloud_watch_alarm_topic] : null
   ok_actions    = var.cloud_watch_alarm_topic != "" ? [var.cloud_watch_alarm_topic] : null
@@ -31,7 +31,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_alarm" {
 resource "aws_cloudwatch_metric_alarm" "lambda_throttles_alarm" {
     for_each = toset(var.function_name)
   
-  alarm_name          = "${each.function_name}-LambdaThrottles"
+  alarm_name          = "${each.value}-LambdaThrottles"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "Throttles"
@@ -39,10 +39,10 @@ resource "aws_cloudwatch_metric_alarm" "lambda_throttles_alarm" {
   period              = "300"
   statistic           = "Sum"
   threshold           = "0"
-  alarm_description   = "${each.function_name} lambda throttles"
+  alarm_description   = "${each.value} lambda throttles"
   treat_missing_data  = "notBreaching"
   dimensions = {
-    FunctionName = var.function_name
+    FunctionName = each.value
   }
   alarm_actions = var.cloud_watch_alarm_topic != "" ? [var.cloud_watch_alarm_topic] : null
   ok_actions    = var.cloud_watch_alarm_topic != "" ? [var.cloud_watch_alarm_topic] : null
