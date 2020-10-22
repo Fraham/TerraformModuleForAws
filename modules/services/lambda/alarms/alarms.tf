@@ -1,6 +1,6 @@
 variable "function_name" {
   description = "The name of the function having default alarms set"
-  type        = string
+  type        = list(string)
 }
 variable "cloud_watch_alarm_topic" {
   type        = string
@@ -9,7 +9,9 @@ variable "cloud_watch_alarm_topic" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "lambda_errors_alarm" {
-  alarm_name          = "${var.function_name}-LambdaErrors"
+  for_each = toset(var.user_names)
+  
+  alarm_name          = "${each.function_name}-LambdaErrors"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "Errors"
@@ -17,7 +19,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_alarm" {
   period              = "300"
   statistic           = "Sum"
   threshold           = "0"
-  alarm_description   = "${var.function_name} lambda errors"
+  alarm_description   = "${each.function_name} lambda errors"
   treat_missing_data  = "notBreaching"
   dimensions = {
     FunctionName = var.function_name
@@ -27,7 +29,9 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_alarm" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "lambda_throttles_alarm" {
-  alarm_name          = "${var.function_name}-LambdaThrottles"
+    for_each = toset(var.user_names)
+  
+  alarm_name          = "${each.function_name}-LambdaThrottles"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "Throttles"
@@ -35,7 +39,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_throttles_alarm" {
   period              = "300"
   statistic           = "Sum"
   threshold           = "0"
-  alarm_description   = "${var.function_name} lambda throttles"
+  alarm_description   = "${each.function_name} lambda throttles"
   treat_missing_data  = "notBreaching"
   dimensions = {
     FunctionName = var.function_name
