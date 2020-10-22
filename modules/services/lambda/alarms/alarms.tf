@@ -9,7 +9,7 @@ variable "cloud_watch_alarm_topic" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "lambda_errors_alarm" {
-  for_each = toset(var.user_names)
+  for_each = toset(var.function_name)
   
   alarm_name          = "${each.function_name}-LambdaErrors"
   comparison_operator = "GreaterThanThreshold"
@@ -29,7 +29,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_alarm" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "lambda_throttles_alarm" {
-    for_each = toset(var.user_names)
+    for_each = toset(var.function_name)
   
   alarm_name          = "${each.function_name}-LambdaThrottles"
   comparison_operator = "GreaterThanThreshold"
