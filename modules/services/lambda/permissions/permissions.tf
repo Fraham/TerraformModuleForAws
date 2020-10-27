@@ -46,3 +46,10 @@ resource "aws_iam_role_policy_attachment" "lambda_access_to_log_groups" {
   role       = each.value
   policy_arn = aws_iam_policy.lambda_access_to_log_groups.arn
 }
+
+resource "aws_iam_role_policy_attachment" "aws_xray_write_only_access" {
+  for_each = toset(var.role_name)
+
+  role       = each.value
+  policy_arn = "arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess"
+}
