@@ -1,3 +1,3 @@
 # Terraform Module For Aws
 
-Simple repository to restore all my AWS Terraform modules
+Simple repository to store all my AWS Terraform modules
